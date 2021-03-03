@@ -18,8 +18,19 @@ app.get('/getusers', (req, res) => {
 });
 app.get('/getmessages', (req, res) => {
   console.log(req.query)
-  var filteresmsgs = messages.filter(x => x.fromm == req.query.clientid || x.to == req.query.clientid)
+  var filteresmsgs = messages.filter(x => x.from == req.query.clientid || x.to == req.query.clientid)
   res.send(filteresmsgs);
+});
+app.get('/getallmessages', (req, res) => {
+  res.send(messages);
+});
+app.get('/reset', (req, res) => {
+  users = []
+  name = ''
+  uhash = ''
+  userdetails = {}
+  messages = []
+  res.send(messages);
 });
 
 var users = []
@@ -44,13 +55,13 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(name + ' disconnected with hash ' + uhash);
     users = users.filter(x => x.hash != uhash)
-    io.emit('chat message', users);
+    io.emit('users', users);
 
   });
   socket.on('new_message', (msg) => {
     messages.push(msg)
     if (msg.to)
-      userdetails[msg.to].emit('new_message', "newmessage")
+      userdetails[msg.to].emit('new_message', msg)
   });
 });
 

@@ -137,7 +137,18 @@
             updateinbox(users)
         });
         socket.on('new_message', function (msg) {
-            getmessages()
+            document.getElementById("message_box").innerHTML +=
+                `<div class="incoming_msg">
+                    <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"
+                            alt="sunil"> </div>
+                    <div class="received_msg">
+                        <div class="received_withd_msg">
+                            <p>${msg.message}</p>
+                            <span class="time_date"> 11:01 AM | June 9</span>
+                        </div>
+                    </div>
+                </div>`
+
         })
 
         function setclienthash(id) {
@@ -149,6 +160,14 @@
         function sendmessage() {
             var mobject = { from: hash, to: clienthash, message: $('#message').val(), time: new Date().getTime() }
             socket.emit('new_message', mobject)
+            document.getElementById("message_box").innerHTML +=
+                `<div class="outgoing_msg">
+                    <div class="sent_msg">
+                        <p>${mobject.message}</p>
+                        <span class="time_date"> 11:01 AM | June 9</span>
+                    </div>
+                </div>`
+
         }
 
         function updateinbox(users) {
@@ -205,7 +224,6 @@
                                 </div>`
                         }
                     })
-                    console.log(msg_html)
                     document.getElementById("message_box").innerHTML = msg_html
                 })
         }
