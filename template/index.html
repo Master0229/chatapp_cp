@@ -134,6 +134,7 @@
 
         socket.on('users', function (users) {
             console.log(users)
+            updateinbox(users)
         });
         socket.on('new_message', function (msg) {
             getmessages()
@@ -150,7 +151,7 @@
             socket.emit('new_message', mobject)
         }
 
-        function updateinbox() {
+        function updateinbox(users) {
             var innerhtml = ''
             users.forEach(user => {
                 console.log(user.hash, hash, user.name)
