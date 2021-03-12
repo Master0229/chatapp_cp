@@ -1,72 +1,58 @@
-var express = require('express');
-var http = require('http');
-var ip = require('ip')
-var app = express();
-var server = http.createServer(app);
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+const cors = require('cors');
+const path = require('path');
 
-var io = require('socket.io')(server);
-var path = require('path');
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
+const router = require('./router');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
+app.use(router);
 
 app.use(express.static(path.join(__dirname, './template')));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/template/index.html');
-});
-app.get('/getusers', (req, res) => {
-  res.send(users);
-});
-app.get('/getmessages', (req, res) => {
-  console.log(req.query)
-  var filteresmsgs = messages.filter(x => x.from == req.query.clientid || x.to == req.query.clientid)
-  res.send(filteresmsgs);
-});
-app.get('/getallmessages', (req, res) => {
-  res.send(messages);
-});
-app.get('/reset', (req, res) => {
-  users = []
-  name = ''
-  uhash = ''
-  userdetails = {}
-  messages = []
-  res.send(messages);
-});
+io.on('connect', (socket) => {
+  console.log("new connection")
+  socket.on('join', ({ name, room }, callback) => {
+    console.log({ name, room })
+    const { error, user } = addUser({ id: socket.id, name, room });
 
-var users = []
-var name
-var uhash
-var userdetails = {}
-var messages = []
-io.on('connection', (socket) => {
-  console.log('new user connected');
+    if (error) return callback(error);
 
-  socket.on('join', (username, hash) => {
-    name = username;
-    uhash = hash
-    if (name && uhash) {
-      var obj = { name: name, hash: uhash, socketid: socket.client.id }
-      userdetails[uhash] = socket
-      users.push(obj)
-    }
-    io.emit('users', users);
+    socket.join(user.room);
+
+    socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.` });
+    socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
+
+    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+
+    callback();
+  });
+
+  socket.on('sendMessage', (message, callback) => {
+    const user = getUser(socket.id);
+
+    io.to(user.room).emit('message', { user: user.name, text: message });
+
+    callback();
   });
 
   socket.on('disconnect', () => {
-    console.log(name + ' disconnected with hash ' + uhash);
-    users = users.filter(x => x.hash != uhash)
-    io.emit('users', users);
+    const user = removeUser(socket.id);
 
-  });
-  socket.on('new_message', (msg) => {
-    messages.push(msg)
-    if (msg.to)
-      userdetails[msg.to].emit('new_message', msg)
-  });
+    if (user) {
+      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+      io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+    }
+  })
 });
 
-var ser = server.listen(3000, '192.168.1.2', () => {
-  console.log('Server listening on: http://' + ser.address().address + ':' + ser.address().port);
-});
-
-
+server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));
