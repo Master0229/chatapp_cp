@@ -49,10 +49,10 @@ io.on('connect', (socket) => {
     const user = removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+      io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.` });
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
     }
   })
 });
 
-server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));
+server.listen(process.env.PORT || 5000, '192.168.1.2', () => console.log(`Server has started.`));

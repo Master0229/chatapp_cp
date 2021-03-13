@@ -45,7 +45,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input oninput="setname(this.value)" type="text" class="form-control"
+                            <input id="name" type="text" class="form-control"
                                 placeholder="your name">
 
                         </div>
@@ -53,7 +53,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-users"></i></span>
                             </div>
-                            <input oninput="setroom(this.value)" type="text" class="form-control"
+                            <input id="room" type="text" class="form-control"
                                 placeholder="room name">
                         </div>
                         <!-- <div class="row align-items-center remember">
@@ -109,14 +109,14 @@
                                 <span class="time_date"> 11:01 AM | June 9</span>
                             </div>
                         </div>
-                    </div> -->
+                    </div>-->
                     <div class="type_msg">
                         <div class="input_msg_write">
                             <input type="text" id="message" class="write_msg" placeholder="Type a message" />
                             <button onclick="sendmessage()" class="msg_send_btn" type="button"><i
                                     class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
