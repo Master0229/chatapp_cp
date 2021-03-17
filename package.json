@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/souvik-pl/chatRoom#readme",
   "dependencies": {
+    "@joeattardi/emoji-button": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "ip": "^1.1.5",

@@ -17,6 +17,8 @@
     <!--Fontawesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css"
+        rel="stylesheet">
 
     <!--Custom styles-->
     <link rel="stylesheet" type="text/css" href="login.css">
@@ -24,10 +26,11 @@
 </head>
 
 <body>
+    <script src="./scripts/fgEmojiPicker.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="./scripts/script.js"></script>
-
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <div id="logincontainer" class="container">
         <div class="d-flex justify-content-center h-100">
             <div class="card">
@@ -45,16 +48,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input id="name" type="text" class="form-control"
-                                placeholder="your name">
+                            <input id="name" type="text" class="form-control" placeholder="your name">
 
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-users"></i></span>
                             </div>
-                            <input id="room" type="text" class="form-control"
-                                placeholder="room name">
+                            <input id="room" type="text" class="form-control" placeholder="room name">
                         </div>
                         <!-- <div class="row align-items-center remember">
                             <input type="checkbox">Remember Me
@@ -81,46 +82,24 @@
                 <div class="mesgs">
                     <div id="message_box" class="msg_history">
                         <div id="messagelist">
-                            
+                            <!-- <p><img id="output" width="200" /></p> -->
                         </div>
-                        <!-- <div class="chat_bot_msg">
-                            <div class="received_msg justify-content-center d-flex">
-                                <div class="admin_dmsg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
+                        <div class="type_msg">
+                            <div class="input_msg_write">
+                                <emoji class="emoji-trigger"><i class="far fa-smile"></i></emoji>
+                                <div class="image-picker">
+                                    <i class="fas fa-image invisible-file-picker-icon"></i>
+                                    <input type="file" class="invisible-file-picker" onchange="loadFile(event)">
                                 </div>
+                                <input type="text" id="message" class="write_msg" placeholder="Type a message" onkeyup="keyevent(this.value)" />
+                                <button onclick="sendmessage()" class="msg_send_btn" type="button"><i
+                                        class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
                             </div>
                         </div>
-                        <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                    alt="sunil"> </div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
-                                    <span class="time_date"> 11:01 AM | June 9</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="outgoing_msg">
-                            <div class="sent_msg">
-                                <p>Test which is a new approach to have all
-                                    solutions</p>
-                                <span class="time_date"> 11:01 AM | June 9</span>
-                            </div>
-                        </div>
-                    </div>-->
-                    <div class="type_msg">
-                        <div class="input_msg_write">
-                            <input type="text" id="message" class="write_msg" placeholder="Type a message" />
-                            <button onclick="sendmessage()" class="msg_send_btn" type="button"><i
-                                    class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                        </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>

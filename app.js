@@ -45,6 +45,14 @@ io.on('connect', (socket) => {
     callback();
   });
 
+  socket.on('sendimage', (imageurl, callback) => {
+    const user = getUser(socket.id);
+
+    io.to(user.room).emit('image', { user: user.name, imageurl: imageurl });
+
+    callback();
+  });
+
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
 

@@ -13,7 +13,7 @@ img{
   width: 40%; border-right:1px solid #c4c4c4;
 }
 .inbox_msg {
-  border: 1px solid #c4c4c4;
+  /* border: 1px solid #c4c4c4; */
   clear: both;
   overflow: hidden;
 }
@@ -131,19 +131,25 @@ img{
   float: right;
   width: 46%;
 }
-.input_msg_write input {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+.input_msg_write input#message {
+  /* background: rgba(0, 0, 0, 0) none repeat scroll 0 0; */
   border: medium none;
   color: #4c4c4c;
   font-size: 15px;
   min-height: 48px;
   width: 100%;
+  border-radius: 100px;
+  padding-left: 75px;
+}
+.input_msg_write {
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .type_msg {
-  border-top: 1px solid #c4c4c4;
+  /* border-top: 1px solid #c4c4c4; */
   position: absolute;
-  bottom: 0;
+  bottom: 10;
   left: 0;
   right: 0;
   width: 100%;
@@ -155,11 +161,12 @@ img{
   color: #fff;
   cursor: pointer;
   font-size: 17px;
-  height: 33px;
+  height: 40px;
+  width: 40px;
   position: absolute;
-  right: 0;
-  top: 11px;
-  width: 33px;
+  position: absolute;
+  right: 25px;
+  top: 4px;
 }
 /* .messaging { 
     padding: 0 0 50px 0;
@@ -170,4 +177,26 @@ img{
 }
 .word-wrap {
   word-wrap: break-word;
+}
+input:focus {
+  outline: none;
+}
+.emoji-trigger {
+  position: absolute;
+  margin: 15;
+  cursor: pointer;
+}
+.invisible-file-picker-icon {
+  position: absolute;
+}
+.invisible-file-picker {
+  opacity: 0;
+  position: absolute;
+  width: 20px;
+  left: 0;
+}
+.image-picker {
+  position: absolute;
+  margin: 15;
+  left: 50;
 }

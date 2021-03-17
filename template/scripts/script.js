@@ -4,6 +4,12 @@ var name = ''
 var room = ''
 var joined = false
 
+document.addEventListener("keydown", (e) => {
+    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+        sendmessage()
+    }
+});
+
 socket.on('message', message => {
     console.log(message)
     if (!joined) {
@@ -50,6 +56,33 @@ socket.on('message', message => {
     }
 });
 
+socket.on('image', image => {
+    var div1 = document.createElement('div')
+    var div2 = document.createElement('div')
+    var p = document.createElement('p')
+    var span = document.createElement('span')
+    var img = document.createElement('img')
+    var strong = document.createElement('strong')
+    var br = document.createElement('br')
+    if (image.user != $('#name').val()) {
+        strong.className = "text-warning"
+        strong.innerHTML = image.user
+        div1.className = "received_msg"
+        div2.className = "received_withd_msg"
+        p.className = 'word-wrap'
+        img.innerHTML = message.text
+        span.className = 'time_date float-right'
+        span.innerHTML = gettime() + ' | ' + getDate()
+        img.src = image.imageurl
+        p.appendChild(strong)
+        p.appendChild(br)
+        p.appendChild(img)
+        p.appendChild(span)
+        div2.appendChild(p)
+        div1.appendChild(div2)
+        document.getElementById('messagelist').append(div1)
+    }
+})
 function setname(value) {
     name = value
 }
@@ -63,6 +96,9 @@ function join() {
             alert(error);
         }
     });
+}
+function keyevent(e) {
+    console.log(e)
 }
 function sendmessage() {
     if ($('#message').val())
@@ -98,3 +134,44 @@ function getDate() {
     date = month_list[month - 1] + ' ' + dat
     return date
 }
+
+//////////EMOJI PICKER///////////
+const emojiTrigger = new FgEmojiPicker({
+    trigger: ['emoji'],
+    position: ['top', 'right'],
+    preFetch: true,
+    emit(obj, triggerElement) {
+        $('#message').val($('#message').val() + obj.emoji)
+    }
+});
+
+////////IMAGE PICKER///////
+function loadFile(event) {
+    // console.log(URL.createObjectURL(event.target.files[0]));
+    // console.log(event.target.files[0]);
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+        socket.emit('sendimage', evt.target.result, () => {
+            var div1 = document.createElement('div')
+            var div2 = document.createElement('div')
+            var img = document.createElement('img')
+            var p = document.createElement('p')
+            var span = document.createElement('span')
+            div1.className = "outgoing_msg"
+            div2.className = "sent_msg"
+            p.className = 'word-wrap'
+            img.src = URL.createObjectURL(event.target.files[0])
+            // p.innerHTML = $('#message').val()
+            p.appendChild(img)
+            span.className = 'time_date float-right'
+            span.innerHTML = gettime() + ' | ' + getDate()
+            p.appendChild(span)
+            div2.appendChild(p)
+            div1.appendChild(div2)
+            document.getElementById('messagelist').append(div1)
+            $('#message').val('')
+            $('#message').focus()
+        });
+    };
+    reader.readAsDataURL(event.target.files[0]);
+};
