@@ -77,6 +77,7 @@ socket.on('image', image => {
         p.appendChild(strong)
         p.appendChild(br)
         p.appendChild(img)
+        p.appendChild(br)
         p.appendChild(span)
         div2.appendChild(p)
         div1.appendChild(div2)
@@ -157,12 +158,14 @@ function loadFile(event) {
             var img = document.createElement('img')
             var p = document.createElement('p')
             var span = document.createElement('span')
+            var br = document.createElement('br')
             div1.className = "outgoing_msg"
             div2.className = "sent_msg"
             p.className = 'word-wrap'
             img.src = URL.createObjectURL(event.target.files[0])
             // p.innerHTML = $('#message').val()
             p.appendChild(img)
+            p.appendChild(br)
             span.className = 'time_date float-right'
             span.innerHTML = gettime() + ' | ' + getDate()
             p.appendChild(span)

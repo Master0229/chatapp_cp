@@ -89,7 +89,7 @@
                                 <emoji class="emoji-trigger"><i class="far fa-smile"></i></emoji>
                                 <div class="image-picker">
                                     <i class="fas fa-image invisible-file-picker-icon"></i>
-                                    <input type="file" class="invisible-file-picker" onchange="loadFile(event)">
+                                    <input type="file" accept=".jpg,.jpeg,.png,.ico" class="invisible-file-picker" onchange="loadFile(event)">
                                 </div>
                                 <input type="text" id="message" class="write_msg" placeholder="Type a message" onkeyup="keyevent(this.value)" />
                                 <button onclick="sendmessage()" class="msg_send_btn" type="button"><i
